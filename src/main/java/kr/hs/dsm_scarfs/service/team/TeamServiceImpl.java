@@ -1,21 +1,20 @@
 package kr.hs.dsm_scarfs.service.team;
 
+import kr.hs.dsm_scarfs.domain.entitys.FileMulti;
 import kr.hs.dsm_scarfs.domain.entitys.Member;
 import kr.hs.dsm_scarfs.domain.entitys.Team;
 import kr.hs.dsm_scarfs.domain.entitys.User;
 import kr.hs.dsm_scarfs.domain.payload.request.TeamInfoRequest;
 import kr.hs.dsm_scarfs.domain.payload.response.MemberResponse;
 import kr.hs.dsm_scarfs.domain.payload.response.TeamResponse;
-import kr.hs.dsm_scarfs.domain.repository.HomeworkRepository;
-import kr.hs.dsm_scarfs.domain.repository.MemberRepository;
-import kr.hs.dsm_scarfs.domain.repository.TeamRepository;
-import kr.hs.dsm_scarfs.domain.repository.UserRepository;
+import kr.hs.dsm_scarfs.domain.repository.*;
 import kr.hs.dsm_scarfs.service.user.UserServiceImpl;
 import kr.hs.dsm_scarfs.util.JwtUtil;
 import kr.hs.dsm_scarfs.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +30,8 @@ public class TeamServiceImpl implements TeamService {
     private UserRepository userRepository;
     @Autowired
     private HomeworkRepository homeworkRepository;
+    @Autowired
+    private FileMultiRepository fileMultiRepository;
 
     @Autowired
     private UserServiceImpl userService;
@@ -102,6 +103,11 @@ public class TeamServiceImpl implements TeamService {
         User user = userRepository.findById(JwtUtil.parseToken(token)).orElseThrow(UserNotFoundException::new);
         Team team = teamRepository.findById(teamId).orElseThrow(TeamNotFoundException::new);
         checkLeader(user.getId(), team.getId());
+
+        for (FileMulti fileMulti : fileMultiRepository.findByTeamId(teamId)) {
+            File file = new File(fileMulti.getSource());
+            file.deleteOnExit();
+        }
 
         memberRepository.deleteAll(memberRepository.findByTeamId(team.getId()).orElseGet(ArrayList::new));
         teamRepository.delete(team);
