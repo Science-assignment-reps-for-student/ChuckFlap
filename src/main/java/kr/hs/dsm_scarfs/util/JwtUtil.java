@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.UUID;
 
 public class JwtUtil {
-    private static String SECURITY_KEY = System.getenv("SCARFS_JWT_PW");
+    private static String SECURITY_KEY = System.getenv("SECRET_KEY_BASE");
 
     private static String generateToken(Object data, Long expire, String type) {
         long nowMillis = System.currentTimeMillis();
