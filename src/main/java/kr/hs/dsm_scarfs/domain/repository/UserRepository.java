@@ -15,9 +15,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByUserNumber(Integer userNumber);
     List<User> findByUserNameIsContainingAndUserTypeOrderByUserNumber(String userName, Integer userType);
 
-    @Query(value = "select u.* from users as u inner join messages as m on m.user_id=u.id where m.is_show=0 group by u.id order by m.message_time desc", nativeQuery = true)
+    @Query(value = "select u.* from users as u inner join messages as m on m.user_id=u.id group by u.id order by m.message_time desc;", nativeQuery = true)
     List<User> findStudent();
-
-    @Query(value = "select 머리말 from 게시글테이블", nativeQuery = true)
-    List<String> getTitle();
 }
