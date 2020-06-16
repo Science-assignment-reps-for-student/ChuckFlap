@@ -105,6 +105,7 @@ public class TeamServiceImpl implements TeamService {
         checkLeader(user.getId(), team.getId());
 
         for (FileMulti fileMulti : fileMultiRepository.findByTeamId(teamId)) {
+            fileMultiRepository.delete(fileMulti);
             File file = new File(fileMulti.getSource());
             file.deleteOnExit();
         }
