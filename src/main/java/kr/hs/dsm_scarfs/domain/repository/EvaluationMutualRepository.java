@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface EvaluationMutualRepository extends JpaRepository<EvaluationMutual, Integer> {
     Optional<EvaluationMutual> findByUserIdAndTargetIdAndHomeworkId(Integer uuid, Integer targetId, Integer homeworkId);
+    void deleteAllByUserIdAndHomeworkId(Integer userId, Integer homeworkId);
 }

@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface EvaluationSelfRepository extends JpaRepository<EvaluationSelf, Integer> {
     Optional<EvaluationSelf> findByUserIdAndHomeworkId(Integer uuid, Integer homeworkId);
+    void deleteByUserIdAndHomeworkId(Integer userId, Integer homeworkId);
 }

@@ -32,6 +32,10 @@ public class TeamServiceImpl implements TeamService {
     private HomeworkRepository homeworkRepository;
     @Autowired
     private FileMultiRepository fileMultiRepository;
+    @Autowired
+    private EvaluationSelfRepository evaluationSelfRepository;
+    @Autowired
+    private EvaluationMutualRepository evaluationMutualRepository;
 
     @Autowired
     private UserServiceImpl userService;
@@ -109,6 +113,8 @@ public class TeamServiceImpl implements TeamService {
             File file = new File(fileMulti.getSource());
             file.deleteOnExit();
         }
+        evaluationSelfRepository.deleteByUserIdAndHomeworkId(user.getId(), team.getHomeworkId());
+        evaluationMutualRepository.deleteAllByUserIdAndHomeworkId(user.getId(), team.getHomeworkId());
 
         memberRepository.deleteAll(memberRepository.findByTeamId(team.getId()).orElseGet(ArrayList::new));
         teamRepository.delete(team);
