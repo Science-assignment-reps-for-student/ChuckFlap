@@ -79,9 +79,9 @@ public class TeamServiceImpl implements TeamService {
             throw new UserAlreadyIncludeException();
         });
 
-        teamRepository.findByTeamNameAndHomeworkId(teamName, homeworkId).ifPresent(team -> {
-            throw new TeamAlreadyExistsException();
-        });
+//        teamRepository.findByTeamNameAndHomeworkId(teamName, homeworkId).ifPresent(team -> {
+//            throw new TeamAlreadyExistsException();
+//        });
 
         Team team = teamRepository.save(Team.builder()
             .leaderId(uuid)
